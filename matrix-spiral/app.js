@@ -73,8 +73,8 @@ const launch = (matrixRange) => {
     }
   };
   let nextMove = "",
-    current = { m: middle, n: middle },
-    i = 0;
+    current = { m: middle, n: middle };
+  process.stdout.write(matrix[current.m][current.n].toString() + " ");
   while (true) {
     try {
       const currentValue = partialPrint();
@@ -87,4 +87,4 @@ const launch = (matrixRange) => {
   }
 };
 
-launch(1001);
+launch(3);
