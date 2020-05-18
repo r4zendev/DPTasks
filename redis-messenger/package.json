@@ -1,0 +1,19 @@
+{
+  "name": "redis-messenger",
+  "version": "1.0.0",
+  "description": "Task1 for application",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+  },
+  "keywords": [
+    "redis",
+    "nodejs"
+  ],
+  "author": "Mysak Alex",
+  "license": "MIT",
+  "dependencies": {
+    "ioredis": "^4.17.1",
+    "prettier": "^2.0.5"
+  }
+}

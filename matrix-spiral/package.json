@@ -1,0 +1,11 @@
+{
+  "name": "matrix-spiral",
+  "version": "1.0.0",
+  "description": "Task2 DigitalPill",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Mysak Alex",
+  "license": "MIT"
+}
