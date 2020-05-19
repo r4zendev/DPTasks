@@ -1,3 +1,6 @@
+// This is a not really well implemented version which does not include mutexes.
+// Pauses do not work as needed and this is expected. Going to modify the solution in the next couple of hours.
+
 const Redis = require("ioredis");
 const crypto = require("crypto");
 const https = require("https");
