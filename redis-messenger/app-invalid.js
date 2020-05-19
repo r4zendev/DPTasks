@@ -1,38 +1,9 @@
-// This solution is using TTL to remove user sessions and manage newGen.
+// This is a not really well implemented version which does not include mutexes.
+// Pauses do not work as needed and this is expected. Going to modify the solution in the next couple of hours.
 
 const Redis = require("ioredis");
 const crypto = require("crypto");
 const https = require("https");
-
-const pickUser = (client, connNames) => {
-  const stream = client.scanStream({
-    match: "user:*",
-    count: 100,
-  });
-
-  const users = [];
-  stream.on("data", (resultKeys) => {
-    for (let i = 0; i < resultKeys.length; i++) {
-      client.get(resultKeys[i], (err, res) => {
-        console.log(`${resultKeys[i]} <------> ${res}`);
-      });
-      users.push(resultKeys[i]);
-    }
-  });
-  stream.on("end", function () {
-    const toSelectFrom = [];
-    users.map((user) => {
-      if (connNames.includes(user)) {
-        toSelectFrom.push(user);
-        client.expire(user, 5);
-      }
-    });
-    client.set(
-      "newGen",
-      toSelectFrom[Math.floor(Math.random() * users.length)]
-    );
-  });
-};
 
 const listErrors = (client) => {
   const stream = client.scanStream({
@@ -50,7 +21,7 @@ const listErrors = (client) => {
     }
   });
   stream.on("end", function () {
-    client.del(keys);
+    client.unlink(keys);
   });
 };
 
@@ -79,11 +50,8 @@ const becomeMessenger = (client) => {
   let currentChannel = -1;
   setInterval(() => {
     client.pubsub("channels", (err, list) => {
+      console.log(list);
       channelList = list;
-    });
-    getClients(client, (clients) => {
-      const connNames = clients.map(({ name }) => name);
-      pickUser(client, connNames);
     });
     const loremURL = new URL("https://baconipsum.com/api/");
     loremURL.searchParams.append("type", "all-meat");
@@ -104,21 +72,14 @@ const becomeMessenger = (client) => {
 
 const becomeListener = (client) => {
   console.log("listen");
-  let timerHolder, subChannel, userHash;
-  userHash = crypto
-    .createHash("md5")
-    .update(Math.random().toString())
-    .digest("hex");
+  client.client("setname", "listener");
+  let timerHolder, subChannel;
   subChannel = crypto
     .createHash("md5")
     .update(Math.random().toString())
     .digest("hex");
-  client.set(`user:${userHash}`, "ready", () => {
-    client.expire(`user:${userHash}`, 5);
-    client.client("setname", `user:${userHash}`);
-    client.subscribe(subChannel);
-    client.subscribe("keepAliveChannel");
-  });
+  client.subscribe(subChannel);
+  client.subscribe("keepAliveChannel");
   const errorValidation = (msg) => {
     if (Math.random() < 0.05) {
       const hashValue = crypto.createHash("md5").update(msg).digest("hex");
@@ -136,14 +97,11 @@ const becomeListener = (client) => {
       clearTimeout(timerHolder);
       timerHolder = setTimeout(() => {
         client.unsubscribe(() => {
-          getClients(client, (cliList) => {
-            const connNames = cliList.map(({ name }) => name);
-            client.get("newGen", (err, resp) => {
-              console.log(userHash === resp.split(":")[1]);
-              if (
-                connNames.indexOf("generator") < 0 &&
-                userHash === resp.split(":")[1]
-              ) {
+          client.client("pause", 1000, (err, res) => {
+            console.log(res);
+            getClients(client, (cliList) => {
+              const connNames = cliList.map(({ name }) => name);
+              if (connNames.indexOf("generator") < 0) {
                 console.log("generating now");
                 becomeMessenger(client);
               } else {
