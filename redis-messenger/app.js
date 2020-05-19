@@ -1,4 +1,5 @@
 // This solution is using TTL to remove user sessions and manage newGen.
+// Even though this might be pretty resource-consuming, this solution is working as expected.
 
 const Redis = require("ioredis");
 const crypto = require("crypto");
