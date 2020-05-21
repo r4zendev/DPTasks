@@ -43,6 +43,8 @@ The algorithm is pretty simple. I used something that looks like data caching an
 I declared a starting move limit which increases by 2 on each iteration. The moves are being increased too, hence when we reach the move limit for a certain direction, the direction changes.  
 When the move limit is reached for all of the directions, move counter resets and move limit is increased by 2.
 
-And, of course, the execution result:
+And, of course, the execution results:
 
-![Execution result](https://i.gyazo.com/1da6ccbfb64ea042f3719687c0ad9d0e.png)
+![Execution result with small matrix](https://i.gyazo.com/81be101ab0848eb61e75cfb4a3bfc785.png)
+
+![Execution result with huge matrix](https://i.gyazo.com/1da6ccbfb64ea042f3719687c0ad9d0e.png)

@@ -71,6 +71,7 @@ const launch = (matrixRange) => {
         return matrix[current.m][current.n];
     }
   };
+  console.log(matrix);
   let nextMove = "",
     current = { m: middle, n: middle };
   process.stdout.write(matrix[current.m][current.n].toString() + " ");
@@ -86,4 +87,4 @@ const launch = (matrixRange) => {
   }
 };
 
-launch(201);
+launch(5);
