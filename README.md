@@ -35,6 +35,14 @@ If we destroy our current generator now, the last listener will become a generat
 
 ![Lastly standing generator](https://i.gyazo.com/6bd48b1e3bbc685b8b396db900b9a921.png)
 
+As for the last noticeable feature, when we change the getErrors boolean param to be set to true by changing the `launch();` code line to `launch(true);`, the list of all errors stored in the Redis is logged into the console. After that it is flushed out of the database.
+
+![Errors](https://i.gyazo.com/ef92a8a2ddc1b34cf5aacab07a56a9ec.png)
+
+Trying to run it for the second time, just for the check:
+
+![Second time running getErrors](https://i.gyazo.com/3026ea78d8ccf830f6af194a10e8fa11.png)
+
 All the required information transfer is done via `Redis` so no other third-party software\library is being used.
 
 # Spiral matrix

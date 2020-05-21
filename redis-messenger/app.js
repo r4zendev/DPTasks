@@ -51,7 +51,11 @@ const listErrors = (client) => {
     }
   });
   stream.on("end", function () {
-    client.del(keys);
+    if (keys.length) {
+      client.del(keys);
+    } else {
+      console.log("No data to delete.");
+    }
   });
 };
 
@@ -195,4 +199,4 @@ const launch = (getErrors = false) => {
   }
 };
 
-launch();
+launch(true);
