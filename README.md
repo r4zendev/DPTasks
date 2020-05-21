@@ -13,12 +13,27 @@ Runs the script for the main entry point:
 
 So, suppose we run 3 instances of the program.
 
-![This](https://i.gyazo.com/f75b2a84b1216b1df97df5d0205cadc9.png) will be our first instance which is converted to generator as we have no other generators in the queue.  
-![This](https://i.gyazo.com/e375fc4e19e79fd15b864a5691a5ce03.png) and ![that](https://i.gyazo.com/2d53a04599db064c73da89ef46301ad3.png) is our second instance (listener now as we have an active generator).  
+![First instance](https://i.gyazo.com/f75b2a84b1216b1df97df5d0205cadc9.png) 
 
-Therefore, we ![destroy](https://i.gyazo.com/28273883e4ec0de89cb036041538862a.png) our currently active messenger instance to check if the result is similar to what we expect it to be.  
-One of our listeners instantly becomes a ![generator](https://i.gyazo.com/fdbca5e6799518a8537149cbb3559d09.png) while the other one continues to ![listen](https://i.gyazo.com/dbdb98fa3849b1962bbb863fc64f5c01.png).  
-If we destroy our current generator now, the last listener will become a ![generator](https://i.gyazo.com/6bd48b1e3bbc685b8b396db900b9a921.png) _(as it is clearly seen because the received messages are different compared to previous screenshots)_.  
+This will be our first instance which is converted to generator as we have no other generators in the queue.  
+
+![Second instance](https://i.gyazo.com/e375fc4e19e79fd15b864a5691a5ce03.png)
+
+![Third instance](https://i.gyazo.com/2d53a04599db064c73da89ef46301ad3.png)
+
+These are our second and third instances (listeners now as we have an active generator).  
+Therefore, we destroy our currently active messenger instance to check if the result is similar to what we expect it to be.
+
+![Destroyed instance](https://i.gyazo.com/28273883e4ec0de89cb036041538862a.png) 
+
+One of our listeners instantly becomes a generator.  
+![Generator instance](https://i.gyazo.com/fdbca5e6799518a8537149cbb3559d09.png)
+While the other one continues to listen.  
+![Listener instance](https://i.gyazo.com/dbdb98fa3849b1962bbb863fc64f5c01.png)
+
+If we destroy our current generator now, the last listener will become a generator _(as it is clearly seen because the received messages are different compared to previous screenshots)_.  
+
+![Lastly standing generator](https://i.gyazo.com/6bd48b1e3bbc685b8b396db900b9a921.png)
 
 All the required information transfer is done via `Redis` so no other third-party software\library is being used.
 
