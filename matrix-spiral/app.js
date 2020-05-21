@@ -10,7 +10,6 @@ const launch = (matrixRange) => {
 
   let middle = Math.floor(matrixRange / 2);
   let moveLimit = 2;
-  console.log(matrix);
 
   let moves = { left: -1, right: 0, down: 0, up: 1 };
 
@@ -87,4 +86,4 @@ const launch = (matrixRange) => {
   }
 };
 
-launch(5);
+launch(201);

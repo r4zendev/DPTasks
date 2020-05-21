@@ -2,9 +2,9 @@
   "name": "redis-messenger",
   "version": "1.0.0",
   "description": "Task1 for application",
-  "main": "app-invalid.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node app-invalid.js"
+    "start": "node app.js"
   },
   "keywords": [
     "redis",

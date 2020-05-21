@@ -15,7 +15,7 @@ const pickUser = (client, connNames) => {
   stream.on("data", (resultKeys) => {
     for (let i = 0; i < resultKeys.length; i++) {
       client.get(resultKeys[i], (err, res) => {
-        console.log(`${resultKeys[i]} <------> ${res}`);
+        // console.log(`${resultKeys[i]} <------> ${res}`);
       });
       users.push(resultKeys[i]);
     }
@@ -25,7 +25,7 @@ const pickUser = (client, connNames) => {
     users.map((user) => {
       if (connNames.includes(user)) {
         toSelectFrom.push(user);
-        client.expire(user, 5);
+        client.expire(user, 2);
       }
     });
     client.set(
@@ -115,7 +115,7 @@ const becomeListener = (client) => {
     .update(Math.random().toString())
     .digest("hex");
   client.set(`user:${userHash}`, "ready", () => {
-    client.expire(`user:${userHash}`, 5);
+    client.expire(`user:${userHash}`, 2);
     client.client("setname", `user:${userHash}`);
     client.subscribe(subChannel);
     client.subscribe("keepAliveChannel");
@@ -140,7 +140,6 @@ const becomeListener = (client) => {
           getClients(client, (cliList) => {
             const connNames = cliList.map(({ name }) => name);
             client.get("newGen", (err, resp) => {
-              console.log(userHash === resp.split(":")[1]);
               if (
                 connNames.indexOf("generator") < 0 &&
                 userHash === resp.split(":")[1]
@@ -176,9 +175,18 @@ const launch = (getErrors = false) => {
   if (getErrors) {
     listErrors(client);
   } else {
-    client.client("list", (err, result) => {
-      if (err) throw new Error(err);
-      if (result.split("\n").slice(0, -1).length > 1) {
+    // client.client("list", (err, result) => {
+    //   if (err) throw new Error(err);
+    //
+    //   if (result.split("\n").slice(0, -1).length > 1) {
+    //     becomeListener(client);
+    //   } else {
+    //     becomeMessenger(client);
+    //   }
+    // });
+    getClients(client, (cliList) => {
+      const connNames = cliList.map(({ name }) => name);
+      if (connNames.indexOf("generator") > -1) {
         becomeListener(client);
       } else {
         becomeMessenger(client);
