@@ -179,15 +179,6 @@ const launch = (getErrors = false) => {
   if (getErrors) {
     listErrors(client);
   } else {
-    // client.client("list", (err, result) => {
-    //   if (err) throw new Error(err);
-    //
-    //   if (result.split("\n").slice(0, -1).length > 1) {
-    //     becomeListener(client);
-    //   } else {
-    //     becomeMessenger(client);
-    //   }
-    // });
     getClients(client, (cliList) => {
       const connNames = cliList.map(({ name }) => name);
       if (connNames.indexOf("generator") > -1) {
@@ -199,4 +190,4 @@ const launch = (getErrors = false) => {
   }
 };
 
-launch(true);
+launch();
